@@ -146,7 +146,6 @@ jQuery(function($){
     }
 
   */
-  var Shopify = Shopify || {};
   Shopify.onError = function(XMLHttpRequest, textStatus) {
     // Shopify returns a description of the error in XMLHttpRequest.responseText.
     // It is JSON.
@@ -548,16 +547,15 @@ jQuery(function($){
   //Attach Submit Handler to all forms with the /cart/add action. 
   $(".quickAdd").submit(function(e) {
     e.preventDefault();
-    button = $(e.target);
-
-    if (checkRequiredFields($(this).closest('form'))) {
-      addToCartAnimation(button);
+    var $form = $(this);
+    if (checkRequiredFields($form)) {
+      addToCartAnimation($(selectors.SUBMIT_ADD_TO_CART, $form));
       //Disable the Add To Cart button, add a disabled class.
       $(e.target).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', true).addClass('disabled');
 
       //Can't use updateCartFromForm since you need the item added before you can update (otherwise, would have been more convenient)
       //So, in onItemAdded, we Shopify.getCart() to force the repaint of items in cart.
-      Shopify.addItemFromForm(e.target);
+      Shopify.addItemFromForm($form);
 
       Shopify.getCart();
     }
@@ -784,11 +782,10 @@ jQuery(function($){
         },
         1200,
         function() {
-          $(elem).prop("disabled", false)
+          $(elem).prop("disabled", false);
           $("#cart-animation").fadeOut(500);
-          elem.closest('form').submit();
           $("body").off("click", ".checkout", disable);
-      }
+        }
       );
     }
 
@@ -813,7 +810,7 @@ jQuery(function($){
   windowResize();
 
   // jQuery css bezier animation support -- Jonah Fox 
-  ;(function($){
+  (function($){
 
     $.path = {};
 
