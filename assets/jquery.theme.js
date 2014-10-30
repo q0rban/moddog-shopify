@@ -527,20 +527,37 @@ jQuery(function($){
       return Shopify.formatMoney(price, Shopify.money_format);
   };
 
+  var checkRequiredFields = function ($form) {
+    var formIsValid = true;
+    $('[required="required"]', $form).each(function() {
+      var $field = $(this);
+      $field.removeClass('error');
+      if ($field.val() == '') {
+        formIsValid = false;
+        $field.addClass('error');
+      }
+    });
+    if (!formIsValid){
+      alert("Please fill out all required fields.");
+    }
+    return formIsValid;
+  };
+
   //Attach Submit Handler to all forms with the /cart/add action. 
   $(".quickAdd").submit(function(e) {
     e.preventDefault();
     button = $(e.target);
 
-    //Disable the Add To Cart button, add a disabled class.
-    $(e.target).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', true).addClass('disabled');
+    if (checkRequiredFields($(this))) {
+      //Disable the Add To Cart button, add a disabled class.
+      $(e.target).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', true).addClass('disabled');
 
-    //Can't use updateCartFromForm since you need the item added before you can update (otherwise, would have been more convenient)
-    //So, in onItemAdded, we Shopify.getCart() to force the repaint of items in cart.
-    Shopify.addItemFromForm(e.target);
+      //Can't use updateCartFromForm since you need the item added before you can update (otherwise, would have been more convenient)
+      //So, in onItemAdded, we Shopify.getCart() to force the repaint of items in cart.
+      Shopify.addItemFromForm(e.target);
 
-    Shopify.getCart();
-
+      Shopify.getCart();
+    }
   });
 
   //We only want to interrupt the UPDATE, not the CHECKOUT process
