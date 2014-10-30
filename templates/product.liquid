@@ -194,29 +194,4 @@ jQuery(function($) {
 });
 Shopify.Image.preload({{ product.images | json }}, 'grande');
 Shopify.Image.preload({{ product.images | json }}, 'master');
-      
-(function ($) {
-  $(function() {
-    $('form').submit(function() {
-      var formIsValid = true;
-      var message = "Please fill this out and you will be able to check out.";
-      $('input').filter('[required="required"]').each(function() {
-        var $field = $(this);
-        $field.removeClass('error');
-        if (formIsValid && $field.val() == '') {
-          formIsValid = false;
-          message = $field.data('error') || message;
-          $field.addClass('error');
-        }
-      });
-      if (formIsValid){
-        jQuery(this).submit();
-      }
-      else {
-        alert(message);
-        return false;
-      }
-    });
-  });
-})(jQuery);
 </script>

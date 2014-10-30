@@ -529,16 +529,21 @@ jQuery(function($){
 
   var checkRequiredFields = function ($form) {
     var formIsValid = true;
-    $('[required="required"]', $form).each(function() {
+    var message = "Please fill out all required fields.";
+    $('[required]', $form).each(function() {
       var $field = $(this);
       $field.removeClass('error');
       if ($field.val() == '') {
         formIsValid = false;
+        var errorMessage = $field.data('error');
+        if (errorMessage) {
+          message += "\n\n" + errorMessage;
+        }
         $field.addClass('error');
       }
     });
     if (!formIsValid){
-      alert("Please fill out all required fields.");
+      alert(message);
     }
     return formIsValid;
   };
@@ -548,7 +553,7 @@ jQuery(function($){
     e.preventDefault();
     button = $(e.target);
 
-    if (checkRequiredFields($(this))) {
+    if (checkRequiredFields($(this).closest('form'))) {
       //Disable the Add To Cart button, add a disabled class.
       $(e.target).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', true).addClass('disabled');
 
