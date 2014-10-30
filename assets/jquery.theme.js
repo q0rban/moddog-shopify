@@ -30,12 +30,12 @@ jQuery(function($){
 
   // Accordian
   $('.accordion-button').click(function() {
-    var accordionContent = $(this).next(".accordion-content")
+    var accordionContent = $(this).next(".accordion-content");
     if ($(accordionContent).is(':visible')) {
-      $(this).find("span").text('+')
+      $(this).find("span").text('+');
       $(accordionContent).slideUp(100)
     } else {
-      $(this).find("span").text('-')
+      $(this).find("span").text('-');
       $(accordionContent).slideDown(100)
     }
     return false;
@@ -51,20 +51,20 @@ jQuery(function($){
           prevEffect  : 'elastic',
           padding     : 0,
           wrapCSS   : 'mnml'  
-   });
+  });
   
-   if ($(window).width() > 782) {
+  if ($(window).width() > 782) {
    /* Initialize zoom on main product image */
     var mainProductImage = $('#feature-image');
     if (mainProductImage.size()) {
       var zoomedSrc = $('#feature-image').attr('src').replace('_master', '');
       $('#feature-image')
-      .wrap('<span style="display:inline-block; max-width: 100%;"></span>')
-      .css('display', 'block')
-      .parent()
-      .zoom( { url: zoomedSrc } );
+        .wrap('<span style="display:inline-block; max-width: 100%;"></span>')
+        .css('display', 'block')
+        .parent()
+        .zoom( { url: zoomedSrc } );
     }
-   }
+  }
    
    // Product Tabs
    $('ul.tabs').each(function(){
@@ -146,7 +146,7 @@ jQuery(function($){
     }
 
   */
-
+  var Shopify = Shopify || {};
   Shopify.onError = function(XMLHttpRequest, textStatus) {
     // Shopify returns a description of the error in XMLHttpRequest.responseText.
     // It is JSON.
@@ -238,10 +238,7 @@ jQuery(function($){
   };
   
   function error(XMLHttpRequest) {
-    var data = eval('(' + XMLHttpRequest.responseText + ')');
-    $("#add").val("Sold Out");  
-    //alert("Sorry, " + data.description);
-      
+    $("#add").val("Sold Out");
   }
 
   // ---------------------------------------------------------
@@ -487,26 +484,26 @@ jQuery(function($){
    *
    */
   var selectors = {
-      // Any elements(s) with this selector will have the total item count put there on add to cart.
-      TOTAL_ITEMS: '.count', 
+    // Any elements(s) with this selector will have the total item count put there on add to cart.
+    TOTAL_ITEMS: '.count',
 
-      SUBMIT_ADD_TO_CART: 'input.add-to-cart',
+    SUBMIT_ADD_TO_CART: 'input.add-to-cart',
 
-      FORM_ADD_TO_CART: 'form[action="/cart/add"]',
+    FORM_ADD_TO_CART: 'form[action="/cart/add"]',
 
-      //FORM_UPDATE_CART: 'form[name=cartform]',
-      //The actual Update Button
-      //FORM_UPDATE_CART_BUTTON: 'form[name=cartform] input[name=update]',
-      //All the buttons on the form
-      //FORM_UPDATE_CART_BUTTONS: 'input[type=image], input.button-update-cart',
+    //FORM_UPDATE_CART: 'form[name=cartform]',
+    //The actual Update Button
+    //FORM_UPDATE_CART_BUTTON: 'form[name=cartform] input[name=update]',
+    //All the buttons on the form
+    //FORM_UPDATE_CART_BUTTONS: 'input[type=image], input.button-update-cart',
 
-      LINE_ITEM_ROW: '.cart-line-item',
-      LINE_ITEM_QUANTITY_PREFIX: 'input#updates_',
-      LINE_ITEM_PRICE_PREFIX: '.cart-line-item-price-',
+    LINE_ITEM_ROW: '.cart-line-item',
+    LINE_ITEM_QUANTITY_PREFIX: 'input#updates_',
+    LINE_ITEM_PRICE_PREFIX: '.cart-line-item-price-',
 
-      LINE_ITEM_REMOVE: '.remove a',
+    LINE_ITEM_REMOVE: '.remove a',
 
-      EMPTY_CART_MESSAGE: '#empty'
+    EMPTY_CART_MESSAGE: '#empty'
   };
 
 
@@ -515,8 +512,8 @@ jQuery(function($){
    *
    */
   var text = {
-      ITEM: 'Item', 
-      ITEMS: 'Items'
+    ITEM: 'Item',
+    ITEMS: 'Items'
   };
 
   var button = '';
@@ -524,7 +521,7 @@ jQuery(function($){
   //Convenience method to format money. 
   //Can just transform the amount here if needed
   var formatMoney = function(price) {
-      return Shopify.formatMoney(price, Shopify.money_format);
+    return Shopify.formatMoney(price, Shopify.money_format);
   };
 
   var checkRequiredFields = function ($form) {
@@ -554,6 +551,7 @@ jQuery(function($){
     button = $(e.target);
 
     if (checkRequiredFields($(this).closest('form'))) {
+      addToCartAnimation(button);
       //Disable the Add To Cart button, add a disabled class.
       $(e.target).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', true).addClass('disabled');
 
@@ -591,15 +589,15 @@ jQuery(function($){
    * @param HTMLelement/String Form HTMLElement, or selector
    */
   Shopify.onItemAdded = function(line_item, form) {
-      //Default behaviour for this modification:
-      //When a Add To Cart form is clicked, we disable the button and apply a class of disabled. 
-      //Here is where we remove the disabled class, and reactivate the button.
-      $(form).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', false).removeClass('disabled');
+    //Default behaviour for this modification:
+    //When a Add To Cart form is clicked, we disable the button and apply a class of disabled.
+    //Here is where we remove the disabled class, and reactivate the button.
+    $(form).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', false).removeClass('disabled');
 
-      //You can add any extra messaging you would want here. 
-      // $('#added-to-cart-message').fadeIn(500).delay(2000).fadeOut(1500);
-      //Get the state of the cart, which will trigger onCartUpdate
-      Shopify.getCart();
+    //You can add any extra messaging you would want here.
+    // $('#added-to-cart-message').fadeIn(500).delay(2000).fadeOut(1500);
+    //Get the state of the cart, which will trigger onCartUpdate
+    Shopify.getCart();
   };
 
   /**
@@ -613,47 +611,45 @@ jQuery(function($){
    * @param HTMLElement form. If included, we know its an Update of the CART FORM, which will trigger additional behaviour. 
    */
   Shopify.onCartUpdate = function(cart, form) {
-
-      // Total Items Update
-      var message = '<span class="count">('+cart.item_count+')</span>';
-      $(selectors.TOTAL_ITEMS).html(message);
-      var mini_message = '<a href="/cart"><span class="count">'+cart.item_count+'</span> Checkout</a>';
-      $(selectors.MINI_ITEMS).html(mini_message);
-      // Price update - any element matching the selector will have their contents updated with the cart price.
-      var price = formatMoney(cart.total_price);
-      $(selectors.TOTAL_PRICE).html(' | Total: ' + price);
+    // Total Items Update
+    var message = '<span class="count">('+cart.item_count+')</span>';
+    $(selectors.TOTAL_ITEMS).html(message);
+    var mini_message = '<a href="/cart"><span class="count">'+cart.item_count+'</span> Checkout</a>';
+    $(selectors.MINI_ITEMS).html(mini_message);
+    // Price update - any element matching the selector will have their contents updated with the cart price.
+    var price = formatMoney(cart.total_price);
+    $(selectors.TOTAL_PRICE).html(' | Total: ' + price);
 
     // show 'added to basket' message
-      //$(button).children(".added-to-cart").fadeIn(500).delay(2000).fadeOut(1500);
+    //$(button).children(".added-to-cart").fadeIn(500).delay(2000).fadeOut(1500);
 
-      //If the EMPTY_CART_MESSAGE element exiss, we should show it, and hide the form. 
-      if( ($(selectors.EMPTY_CART_MESSAGE).length > 0) &&  cart.item_count == 0) {
-          $(selectors.FORM_UPDATE_CART).hide();
-          $(selectors.EMPTY_CART_MESSAGE).show();
+    //If the EMPTY_CART_MESSAGE element exiss, we should show it, and hide the form.
+    if( ($(selectors.EMPTY_CART_MESSAGE).length > 0) &&  cart.item_count == 0) {
+        $(selectors.FORM_UPDATE_CART).hide();
+        $(selectors.EMPTY_CART_MESSAGE).show();
+    }
+
+    // A form was passed in?
+    form = form || false;
+    //so it's the cart page form update, trigger behaviours for that page
+    if(form) {
+      //Nothing left in cart, we reveal the Nothing in cart content, hide the form.
+      if(cart.item_count > 0) {
+        //Loops through cart items, update the prices.
+        $.each(cart.items, function(index, cartItem) {
+            $(selectors.LINE_ITEM_PRICE_PREFIX + cartItem.id).html(formatMoney(cartItem.line_price));
+            $(selectors.LINE_ITEM_QUANTITY_PREFIX + cartItem.id).val(cartItem.quantity);
+        });
+
+        //And remove any line items with 0
+        $(form).find('input[value=0]').parents(selectors.LINE_ITEM_ROW).remove();
+
+        //Since we are on the cart page, reenable the buttons we disabled
+        $(form).find(selectors.FORM_UPDATE_CART_BUTTONS).attr('disabled', false).removeClass('disabled');
       }
-
-      // A form was passed in?
-      form = form || false;
-      //so it's the cart page form update, trigger behaviours for that page
-      if(form) {
-          //Nothing left in cart, we reveal the Nothing in cart content, hide the form.
-          if(cart.item_count > 0) {
-              //Loops through cart items, update the prices.
-              $.each(cart.items, function(index, cartItem) {
-                  $(selectors.LINE_ITEM_PRICE_PREFIX + cartItem.id).html(formatMoney(cartItem.line_price));
-                  $(selectors.LINE_ITEM_QUANTITY_PREFIX + cartItem.id).val(cartItem.quantity);
-              });
-
-              //And remove any line items with 0
-              $(form).find('input[value=0]').parents(selectors.LINE_ITEM_ROW).remove();
-
-              //Since we are on the cart page, reenable the buttons we disabled
-              $(form).find(selectors.FORM_UPDATE_CART_BUTTONS).attr('disabled', false).removeClass('disabled');
-
-          }    
-          //You can add any extra messaging you would want here. 
-          //successMessage('Cart Updated.');
-      }
+      //You can add any extra messaging you would want here.
+      //successMessage('Cart Updated.');
+    }
   
     /* Rebuild Cart Drawer when adding an item using ajax */
     var drawer = '';
@@ -685,10 +681,6 @@ jQuery(function($){
           }
         }
       });
-      
-      
-    } else {
-      
     }
   };
   
@@ -712,7 +704,7 @@ jQuery(function($){
   {
      e.preventDefault(); 
      return false;
-  };
+  }
   
   $(document).on("click", ".removeLine", function(e) { 
     e.preventDefault();
@@ -743,88 +735,81 @@ jQuery(function($){
   };
     
   // Add to cart animation
-  $(".add-to-cart").click(function(e){
+  var addToCartAnimation = function (elem) {
+    elem.prop("disabled", true);
 
-      var elem = $(this);
-      elem.prop("disabled", true);
- 
 	  $("body").on("click", ".checkout", disable);
 
-      e.preventDefault();
+    function animate() {
+      $("#cart-animation").show();
 
-      function animate() {
+      var addtocartWidth = elem.outerWidth() / 2;
+      var addtocartHeight = elem.outerHeight() / 2;
 
-        $("#cart-animation").show()
+      var addtocartLeft = elem.offset().left + addtocartWidth;
+      var addtocartTop = elem.offset().top + addtocartHeight ;
 
-        var addtocartWidth = elem.outerWidth() / 2;
-        var addtocartHeight = elem.outerHeight() / 2;
+      var buttonAreaWidth = $(".cart-target").outerWidth();
+      var buttonAreaHeight = $(".cart-target").outerHeight();
 
-        var addtocartLeft = elem.offset().left + addtocartWidth;
-        var addtocartTop = elem.offset().top + addtocartHeight ;
+      var buttonAreaLeft = $(".cart-target").offset().left + buttonAreaWidth / 2  - $("#cart-animation").outerWidth() / 2;
 
-        var buttonAreaWidth = $(".cart-target").outerWidth();
-        var buttonAreaHeight = $(".cart-target").outerHeight();
+      var htmlMargin = $('html').css('margin-top');
+      var htmlMarginTrim = parseInt(htmlMargin);
 
-        var buttonAreaLeft = $(".cart-target").offset().left + buttonAreaWidth / 2  - $("#cart-animation").outerWidth() / 2;
-
-        var htmlMargin = $('html').css('margin-top')
-        var htmlMarginTrim = parseInt(htmlMargin);
-
-          if (htmlMargin !== 0 ) {
-            var buttonAreaTop = $(".cart-target").offset().top + buttonAreaWidth / 2  - htmlMarginTrim - $("#cart-animation").outerHeight() / 2 ;
-          } else {
-            var buttonAreaTop = $(".cart-target").offset().top + buttonAreaWidth / 2  - $("#cart-animation").outerHeight() / 2 ;
-
-          }
-
-        var path = {
-          start: {
-            x: addtocartLeft,
-            y: addtocartTop,
-            angle: 190.012,
-            length: 0.2
-          },
-          end: {
-            x: buttonAreaLeft,
-            y: buttonAreaTop,
-            angle: 90.012,
-            length: 0.50
-          }
-        };
-
-        $('#cart-animation').animate(
-          {
-            path : new $.path.bezier(path)
-          },
-          1200,
-          function() {
-            $(elem).prop("disabled", false)
-            $("#cart-animation").fadeOut(500);
-            elem.closest('form').submit();
-            $("body").off("click", ".checkout", disable);
-        }
-        );
+      if (htmlMargin !== 0 ) {
+        var buttonAreaTop = $(".cart-target").offset().top + buttonAreaWidth / 2  - htmlMarginTrim - $("#cart-animation").outerHeight() / 2 ;
+      } else {
+        var buttonAreaTop = $(".cart-target").offset().top + buttonAreaWidth / 2  - $("#cart-animation").outerHeight() / 2 ;
       }
 
-      animate();
-    })
+      var path = {
+        start: {
+          x: addtocartLeft,
+          y: addtocartTop,
+          angle: 190.012,
+          length: 0.2
+        },
+        end: {
+          x: buttonAreaLeft,
+          y: buttonAreaTop,
+          angle: 90.012,
+          length: 0.50
+        }
+      };
+
+      $('#cart-animation').animate(
+        {
+          path : new $.path.bezier(path)
+        },
+        1200,
+        function() {
+          $(elem).prop("disabled", false)
+          $("#cart-animation").fadeOut(500);
+          elem.closest('form').submit();
+          $("body").off("click", ".checkout", disable);
+      }
+      );
+    }
+
+    animate();
+  };
     
   // show or hide add to cart targets
   function windowResize() {
     if ($(window).width() < 782) {
       $(".cart.mobile").find(".count").addClass("cart-target")
       $(".cart.desktop").find(".count").removeClass("cart-target")
-    } else {
-
+    }
+    else {
       $(".cart.desktop").find(".count").addClass("cart-target")
       $(".cart.mobile").find(".count").removeClass("cart-target")
     }
-
   } 
 
   $(window).resize(function(){
     windowResize();
-  })
+  });
   windowResize();
 
   // jQuery css bezier animation support -- Jonah Fox 
@@ -931,12 +916,6 @@ jQuery(function($){
     $.placeholder.shim();
 
   })(jQuery);
-  
-})  
-
-$(window).load(function() {
- 
-  
 });
 
 /* html5 placehodler shim */
