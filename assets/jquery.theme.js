@@ -531,10 +531,7 @@ jQuery(function($){
       $field.removeClass('error');
       if ($field.val() == '') {
         formIsValid = false;
-        var errorMessage = $field.data('error');
-        if (errorMessage) {
-          message += "\n\n" + errorMessage;
-        }
+        message = $field.data('error') || message;
         $field.addClass('error');
       }
     });
@@ -549,15 +546,7 @@ jQuery(function($){
     e.preventDefault();
     var $form = $(this);
     if (checkRequiredFields($form)) {
-      addToCartAnimation($(selectors.SUBMIT_ADD_TO_CART, $form));
-      //Disable the Add To Cart button, add a disabled class.
-      $(e.target).find(selectors.SUBMIT_ADD_TO_CART).attr('disabled', true).addClass('disabled');
-
-      //Can't use updateCartFromForm since you need the item added before you can update (otherwise, would have been more convenient)
-      //So, in onItemAdded, we Shopify.getCart() to force the repaint of items in cart.
-      Shopify.addItemFromForm($form);
-
-      Shopify.getCart();
+      addToCartAnimation($form);
     }
   });
 
@@ -733,7 +722,8 @@ jQuery(function($){
   };
     
   // Add to cart animation
-  var addToCartAnimation = function (elem) {
+  var addToCartAnimation = function ($form) {
+    var elem = $(selectors.SUBMIT_ADD_TO_CART, $form);
     elem.prop("disabled", true);
 
 	  $("body").on("click", ".checkout", disable);
@@ -785,6 +775,14 @@ jQuery(function($){
           $(elem).prop("disabled", false);
           $("#cart-animation").fadeOut(500);
           $("body").off("click", ".checkout", disable);
+          //Disable the Add To Cart button, add a disabled class.
+          elem.attr('disabled', true).addClass('disabled');
+
+          //Can't use updateCartFromForm since you need the item added before you can update (otherwise, would have been more convenient)
+          //So, in onItemAdded, we Shopify.getCart() to force the repaint of items in cart.
+          Shopify.addItemFromForm($form);
+
+          Shopify.getCart();
         }
       );
     }
