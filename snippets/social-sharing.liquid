@@ -1,33 +1,69 @@
-<!-- START SHARE-->
-<section id="share" class="clearfix">
-	<div class="google">
-		<!-- Place this tag where you want the +1 button to render. -->
-		<div class="g-plusone" data-size="medium" data-annotation="inline" data-width="50"></div>
-		<!-- Place this tag after the last +1 button tag. -->
-		<script>
-		  (function() {
-		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-		    po.src = '//apis.google.com/js/plusone.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-		  })();
-		</script>
-	</div>
-	<div class="twitter">
-		<a href="//twitter.com/share" class="twitter-share-button" {% if settings.twitter_url != blank %}data-via="{{ settings.twitter_url | remove: 'https://www.twitter.com/' | remove: 'http://www.twitter.com/' }}"{% endif %}>Tweet</a>
-		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	</div>
-	<div class="pinterest">
-		{% if template == 'article' %}
-			{% assign product = collections.frontpage.products.first %}
-			<a href="//pinterest.com/pin/create/button/?url={{ shop.url }}/{{ article.url}}&media={% if settings.use_logo == true %}{{ 'logo.png' | asset_url }}{% else %}
-			{{ product.featured_image | product_img_url: 'medium' }}{% endif %}&description={{ article.title }}" class="pin-it-button" count-layout="none">Pin It</a>
-		{% else %}
-			<a href="//pinterest.com/pin/create/button/?url={{ shop.url }}&media={{ product.featured_image | product_img_url: 'large' | split:'?' | first  }}&description={{ product.title }}" class="pin-it-button" count-layout="none">Pin It</a>
-			{% endif %}
-			<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
-	</div>
-	<div class="facebook">
-      <iframe src="//www.facebook.com/plugins/like.php?href={{ shop.url }}{{ product.url }}{{ article.url }}&amp;width=300&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px; height:21px;" allowTransparency="true"></iframe>
-	</div>
-</section>
-<!-- END SHARE-->
+<!-- /snippets/social-sharing.liquid -->
+{% if template contains 'article' or template contains 'blog' %}
+  {% capture permalinkURL %}{{ shop.url }}{{ article.url }}{% endcapture %}
+  {% capture shareTitle %}{{ article.title | url_param_escape }}{% endcapture %}
+
+{% elsif template contains 'product' %}
+  {% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+  {% capture shareTitle %}{{ product.title | url_param_escape }}{% endcapture %}
+
+{% endif %}
+
+{% assign shareButtonStyle = settings.social_sharing_style %}
+
+<div class="social-sharing {{ shareButtonStyle }}" data-permalink="{{ permalinkURL }}">
+
+  {% if settings.share_facebook %}
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ permalinkURL }}" class="share-facebook">
+      <span class="icon icon-facebook" aria-hidden="true"></span>
+      <span class="share-title">{{ 'general.social.share_on_facebook' | t }}</span>
+      {% if settings.social_sharing_count %}
+        <span class="share-count">0</span>
+      {% endif %}
+    </a>
+  {% endif %}
+
+  {% if settings.share_twitter %}
+    <a target="_blank" href="//twitter.com/share?url={{ permalinkURL }}&amp;text={{ shareTitle }}" class="share-twitter">
+      <span class="icon icon-twitter" aria-hidden="true"></span>
+      <span class="share-title">{{ 'general.social.share_on_twitter' | t }}</span>
+      {% if settings.social_sharing_count %}
+        <span class="share-count">0</span>
+      {% endif %}
+    </a>
+  {% endif %}
+
+  {% if template contains 'product' %}
+
+    {% if settings.share_pinterest %}
+      <a target="_blank" href="http://pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media={{ product.featured_image | product_img_url: '1024x1024' }}&amp;description={{ shareTitle }}" class="share-pinterest">
+        <span class="icon icon-pinterest" aria-hidden="true"></span>
+        <span class="share-title">{{ 'general.social.share_on_pinterest' | t }}</span>
+        {% if settings.social_sharing_count %}
+          <span class="share-count">0</span>
+        {% endif %}
+      </a>
+    {% endif %}
+
+    {% if settings.share_fancy %}
+      <a target="_blank" href="http://www.thefancy.com/fancyit?ItemURL={{ permalinkURL }}&amp;Title={{ shareTitle }}&amp;Category=Other&amp;ImageURL={{ product.featured_image | product_img_url: '1024x1024' }}" class="share-fancy">
+        <span class="icon icon-fancy" aria-hidden="true"></span>
+        <span class="share-title">{{ 'general.social.share_on_fancy' | t }}</span>
+      </a>
+    {% endif %}
+
+  {% endif %}
+
+  {% if settings.share_google %}
+    <a target="_blank" href="//plus.google.com/share?url={{ permalinkURL }}" class="share-google">
+      <!-- Cannot get Google+ share count with JS yet -->
+      <span class="icon icon-google" aria-hidden="true"></span>
+      {% if settings.social_sharing_count %}
+        <span class="share-count">+1</span>
+      {% else %}
+        <span class="share-title">+1</span>
+      {% endif %}
+    </a>
+  {% endif %}
+
+</div>

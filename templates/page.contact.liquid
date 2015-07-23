@@ -1,54 +1,60 @@
-{% include 'breadcrumb' %}
+<!-- /templates/page.contact.liquid -->
+<div class="grid">
 
-<h1>{{ page.title }}</h1>
-<div class="wysiwyg">
-  {{ page.content }}	
-</div>
+  <div class="grid__item large--five-sixths push--large--one-twelfth">
 
-<div class="twelve columns alpha omega">
-  <div class="six columns alpha">
-  {% form 'contact' %}
+    <header class="section-header text-center">
+      <h1>{{ page.title }}</h1>
+      <hr class="hr--small">
+    </header>
 
-  {% if form.posted_successfully? %}
-    <div class="successForm feedback">
-      <p>Thanks for contacting us! We'll get back to you as soon as possible.</p>
-    </div>
-  {% endif %}
+    <div class="grid">
+      <div class="grid__item large--four-fifths push--large--one-tenth">
+        <div class="rte rte--nomargin rte--indented-images">
+          {{ page.content }}
+        </div>
 
-  {% if form.errors %}
-    <div class="errorForm feedback">
-      <p>Oops, sorry. We were unable to submit your inquiry because it contained {{ form.errors | size | pluralize: 'an error', 'a few errors' }}. Please correct the following and submit again:</p>
-      {% for field in form.errors %}
-      <p>The {{ field | capitalize | replace: 'Body', 'Message' }} field {{ form.errors.messages[field] }}.</p>
-      {% endfor %}
-    </div>
-  {% endif %}
+        <div class="form-vertical">
+          {% form 'contact' %}
 
-    <div class="clearfix large_form">
-      <label for="contact_name" class="contact">Name</label>
-      <input type="text" value="" name="contact[name]" id="contact_name" class="long" />
-    </div>
-  
-    <div class="clearfix large_form">
-      <label for="contact_email" class="contact">Email Address</label>
-      <input required type="email" value="" name="contact[email]" id="contact_email" class="long" />
-    </div>
-  
-    <div class="clearfix large_form">
-      <label for="contact_phone" class="contact">Phone Number</label>
-      <input required type="text" value="" name="contact[phone]" id="contact_phone" class="long" />
-    </div>
-  
-    <div class="clearfix large_form">
-      <label for="contact_body" class="contact">Message</label>
-      <textarea required name="contact[body]" id="contact_body" class="long"></textarea>
-    </div>
-  
-    <div class="action_bottom">
-      <input type="submit" class="button" value="Send" />
+            {% comment %}
+              Successful message
+            {% endcomment %}
+            {% if form.posted_successfully? %}
+              <p class="note form-success">
+                {{ 'contact.form.post_success' | t }}
+              </p>
+            {% endif %}
+
+            {{ form.errors | default_errors }}
+
+            <div class="grid grid--small">
+              <div class="grid__item large--one-half">
+                {% assign name_attr = 'contact.form.name' | t | handle %}
+                <label for="ContactFormName" class="hidden-label">{{ 'contact.form.name' | t }}</label>
+                <input type="text" id="ContactFormName" class="input-full" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+
+              <div class="grid__item large--one-half">
+                <label for="ContactFormEmail" class="hidden-label">{{ 'contact.form.email' | t }}</label>
+                <input type="email" id="ContactFormEmail" class="input-full" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+              </div>
+            </div>
+
+            {% assign name_attr = 'contact.form.phone' | t | handle %}
+            <label for="ContactFormPhone" class="hidden-label">{{ 'contact.form.phone' | t }}</label>
+            <input type="tel" id="ContactFormPhone" class="input-full" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+
+            <label for="ContactFormMessage" class="hidden-label">{{ 'contact.form.message' | t }}</label>
+            <textarea rows="10" id="ContactFormMessage" class="input-full" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+            <input type="submit" class="btn right" value="{{ 'contact.form.send' | t }}">
+
+          {% endform %}
+        </div>
+      </div>
     </div>
 
-  {% endform %}
-		
   </div>
+
 </div>
