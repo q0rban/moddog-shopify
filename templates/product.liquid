@@ -77,6 +77,9 @@
               {% endfor %}
             </select>
 
+            <label for="measurement">Neck Measurement:</label>
+            <input type="text" id="measurement" name="properties[Neck Measurement]" placeholder='18"' required data-error="You must specify a neck measurement." />
+
             {% comment %}
             <div class="product-single__quantity">
               <label for="Quantity" class="product-single__quantity-label js-quantity-selector">{{ 'products.product.quantity' | t }}</label>
