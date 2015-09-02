@@ -283,8 +283,7 @@
                 to toggle a modal ('popup') instead of linking to the search page.
                 {% endcomment %}
 
-                {% comment %}
-                {% assign search_modal = false %}
+                {% assign search_modal = true %}
                 <li class="site-nav__item">
                   <a href="/search" class="site-nav__link site-nav__link--icon{% if search_modal %} js-toggle-search-modal{% endif %}" data-mfp-src="#SearchModal">
                     <span class="icon-fallback-text">
@@ -293,7 +292,6 @@
                     </span>
                   </a>
                 </li>
-                {% endcomment %}
 
                 <li class="site-nav__item">
                   <a href="/cart" class="site-nav__link site-nav__link--icon cart-link js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false">
