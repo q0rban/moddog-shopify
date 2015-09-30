@@ -61,8 +61,9 @@
         {% endraw %}{% if settings.cart_notes_enable %}{% raw %}
           <div>
             <label for="CartSpecialInstructions" class="ajaxcart__note">{% endraw %}{{ 'cart.general.note' | t }}{% raw %}</label>
-            <textarea name="note" class="input-full" id="CartSpecialInstructions">{{note}}</textarea>
-          </div>
+            <textarea name="note" class="input-full" id="CartSpecialInstructions" required data-error="{% endraw %}{{ 'general.errors.breed_omitted' | t }}{% raw %}">{{note}}</textarea>
+            <p><em>{% endraw %}{{ 'cart.general.note_description' | t }}{% raw %}</em></p>
+      </div>
         {% endraw %}{% endif %}{% raw %}
       </div>
       <div class="ajaxcart__footer ajaxcart__footer--fixed">

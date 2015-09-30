@@ -28,6 +28,10 @@
     "drawers": {
       "navigation": "Site navigation",
       "close_menu": "Close menu"
+    },
+    "errors": {
+      "neck_omitted": "You must specify a neck measurement.",
+      "breed_omitted": "Please tell us the breed and age of any dogs associated with this order. If not applicable, enter N/A."
     }
   },
   "blogs": {
@@ -55,7 +59,8 @@
     "general": {
       "title": "Your cart",
       "remove": "Remove",
-      "note": "Special instructions for seller",
+      "note": "Age and breed",
+      "note_description": "Please tell us the breed and age of any dogs associated with this order. If not applicable, enter N/A.",
       "subtotal": "Subtotal",
       "shipping_at_checkout": "Shipping & taxes calculated at checkout",
       "update": "Update Cart",

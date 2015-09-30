@@ -122,7 +122,8 @@
               <div class="grid__item large--three-fifths">
                 <div class="cart__note">
                   <label for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
-                  <textarea name="note" class="input-full" id="CartSpecialInstructions">{{ cart.note }}</textarea>
+                  <textarea name="note" class="input-full" id="CartSpecialInstructions" required data-error="{{ 'general.errors.breed_omitted' | t }}">{{ cart.note }}</textarea>
+                  <p><em>{{ 'cart.general.note_description' | t }}</em></p>
                 </div>
               </div>
             {% endif %}
