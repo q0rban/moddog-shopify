@@ -148,12 +148,12 @@
 {% endcomment %}
 {{ 'variant_selection.js' | asset_url | script_tag }}
 
-{{ 'jquery.h5validate.js' | asset_url | script_tag }}
-<script>
-  $(document).ready(function () {
-    $('form.product-single__form').h5Validate();
-  });
-</script>
+{#{{ 'jquery.h5validate.js' | asset_url | script_tag }}#}
+{#<script>#}
+  {#$(document).ready(function () {#}
+    {#$('form.product-single__form').h5Validate();#}
+  {#});#}
+{#</script>#}
 
 <script>
   var selectCallback = function(variant, selector) {
